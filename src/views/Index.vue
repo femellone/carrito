@@ -46,6 +46,7 @@ export default {
   methods: {
     getProducts: function () {
       try {
+        //comentario
         this.productos = []
         db.collection('tucarrito').doc(this.user).get()
         .then(
