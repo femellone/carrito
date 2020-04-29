@@ -6,16 +6,8 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    user: null
   },
   mutations: {
-    initializeApp: function() {
-      console.log('se cargó initializeapp')
-    },
-    logout: function (state) {
-      state.user = null
-      state.token = null
-    }
   },
   actions: {
   },

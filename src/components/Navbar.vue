@@ -1,6 +1,6 @@
 <template>
   <b-navbar toggleable="lg" type="dark" variant="info">
-    <b-navbar-brand href="#">{{brand}}</b-navbar-brand>
+    <b-navbar-brand href="#">{{BrandName}}</b-navbar-brand>
 
     <b-navbar-toggle v-if="$route.meta.auth" target="nav-collapse"></b-navbar-toggle>
 
@@ -19,7 +19,7 @@ import firebase from 'firebase'
 
 
 export default {
-  props: ['brand'],
+  props: ['BrandName'],
   data() {
     return {
       user: null

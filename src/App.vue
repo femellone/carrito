@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Navbar />
+    <Navbar brand-name="Tu Carrito" />
     <router-view/>
   </div>
 </template>
