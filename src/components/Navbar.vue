@@ -9,10 +9,6 @@
       <!-- Right aligned nav items -->
       <b-navbar-nav class="ml-auto">
         <b-nav-item v-if="user" @click="logout" href="#">Cerrá sesión</b-nav-item>
-        <template v-else>
-          <b-nav-item @click="register" href="#">Registrate</b-nav-item>
-          <b-nav-item @click="register" href="#">Iniciá sesión</b-nav-item>
-        </template>
       </b-navbar-nav>
     </b-collapse>
   </b-navbar>
@@ -32,7 +28,7 @@ export default {
   computed: {
   },
   methods: {
-    ...mapMutations(['register', 'logout', 'initializeApp'])
+    ...mapMutations(['logout'])
   },
 }
 </script>

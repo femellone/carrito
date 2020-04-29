@@ -1,17 +1,30 @@
 <template>
   <div>
-    <h1>Logeate</h1>
-    <form class="form-group">
-      <input class="form-control" type="text" placeholder="User">
-      <input class="form-control" type="password" name="password" id="password" placeholder="Password">
-      <input class="btn btn-success" type="submit" name="button" id="button" value="Log in">
-    </form>
+    <h1>No estás conectado</h1>
+    <br>
+    <b-button @click="register" class="m-2">Registrate</b-button>
+    <b-button @click="register" class="m-2">Iniciá sesión</b-button>
   </div>
 </template>
 
 <script>
-export default {
+import firebase from 'firebase'
 
+export default {
+  name: 'Login',
+  data() {
+    return {
+      
+    }
+  },
+  methods: {
+    register: function () {
+      var provider = new firebase.auth.GoogleAuthProvider();
+      firebase.auth().useDeviceLanguage();
+      firebase.auth().signInWithPopup(provider)
+      .then((user) => this.$router.replace('home'), (error) => console.error(error))
+    },
+  },
 }
 </script>
 

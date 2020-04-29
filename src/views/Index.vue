@@ -68,8 +68,8 @@ export default {
       }
     },
     increase: function (index) {
-      cantidad = parseInt(this.productos[index].cantidad)
-      precio = parseInt(this.productos[index].precio)
+      var cantidad = parseInt(this.productos[index].cantidad)
+      var precio = parseInt(this.productos[index].precio)
       cantidad = cantidad + 1
       this.productos[index].cantidad = cantidad
       this.productos[index].precio = precio

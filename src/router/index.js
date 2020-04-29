@@ -12,10 +12,6 @@ const routes = [
     redirect: '/login'
   },
   {
-    path: '/',
-    redirect: '/login'
-  },
-  {
     path: '/login',
     name: 'Login',
     component: Login
@@ -38,9 +34,10 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   let user = firebase.auth().currentUser;
+  console.log(user)
   let authentication = to.matched.some(record => record.meta.auth)
 
-  if (authentication && !usuario) {
+  if (authentication && !user) {
     next('login')
   } else if (!authentication && user) {
     next('home')
