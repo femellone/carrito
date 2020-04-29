@@ -2,8 +2,8 @@
   <div>
     <h1>No estás conectado</h1>
     <br>
-    <b-button @click="register" class="m-2">Registrate</b-button>
-    <b-button @click="register" class="m-2">Iniciá sesión</b-button>
+    <b-button @click="login" class="m-2">Registrate</b-button>
+    <b-button @click="login" class="m-2">Iniciá sesión</b-button>
   </div>
 </template>
 
@@ -18,10 +18,10 @@ export default {
     }
   },
   methods: {
-    register: function () {
+    login: function () {
       var provider = new firebase.auth.GoogleAuthProvider();
       firebase.auth().useDeviceLanguage();
-      firebase.auth().signInWithPopup(provider)
+      firebase.auth().signInWithRedirect(provider)
       .then((user) => this.$router.replace('home'), (error) => console.error(error))
     },
   },
