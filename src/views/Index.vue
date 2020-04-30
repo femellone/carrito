@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="container mt-5 w-75">
+    <div class="container">
       <div class="form-group">
         <div class="producto-agregar d-flex flex-row">
           <input type="text" v-model="nombre" class="form-control" id="Producto" placeholder="Producto">
@@ -11,18 +11,18 @@
           <input v-model="cantidad" type="number" class="form-control" style="width: 35%;" id="cantidad" placeholder="Cant">
         </div>
       </div>
-      <table class="table">
-        <tbody class="overflow-auto">
-          <tr v-for="(producto, index) in productos" :key="index" :id="index" class="text-center row d-flex">
-            <td class="detalle py-3 col col-3">{{producto.nombre}}</td>
-            <td class="detalle py-3 col col-3">{{producto.cantidad}}</td>
-            <td class="detalle py-3 col col-3">{{producto.precio}}</td>
-            <td class="text-right col-3 d-flex no-wrap"><button @click="increase(index)" class="btn btn-success">+</button><button @click="decrease(index)" class="btn btn-danger menos">-</button></td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="table table-container">
+        <div class="tbody">
+          <div v-for="(producto, index) in productos" :key="index" :id="index" class="tr text-center row d-flex">
+            <div class="td detalle py-3 col col-5">{{producto.nombre}}</div>
+            <div class="td detalle py-3 col col-1">{{producto.cantidad}}</div>
+            <div class="td detalle py-3 col col-3">{{ producto.precio | formatNumber }}</div>
+            <div class="td btn-container text-right col-3 d-flex no-wrap"><button @click="increase(index)" class="btn btn-success">+</button><button @click="decrease(index)" class="btn btn-danger menos">-</button></div>
+          </div>
+        </div>
+      </div>
       <div class="total form-group">
-        <input type="number" v-model="total" class="form-control m-0 p-0 w-50" id="total" disabled>
+        <input type="text" v-model="total" class="form-control m-0 p-0 w-50" id="total" disabled>
       </div>
     </div>
   </div>
@@ -31,6 +31,7 @@
 <script>
 import { db } from '@/main'
 import firebase from 'firebase'
+import numeral from 'numeral'
 
 export default {
   name: 'Index',
@@ -88,24 +89,14 @@ export default {
       }
     },
     increase: function (index) {
-      var cantidad = parseInt(this.productos[index].cantidad)
-      var precio = parseInt(this.productos[index].precio)
-      cantidad = cantidad + 1
-      this.productos[index].cantidad = cantidad
-      this.productos[index].precio = precio
+      this.productos[index].cantidad = parseInt(this.productos[index].cantidad) + 1
       let productos = this.productos
       db.collection('tucarrito').doc(this.user).set({productos})
     },
     decrease: function (index) {
-      var cantidad = this.productos[index].cantidad
-      var precio = this.productos[index].precio
-      cantidad = cantidad - 1
-      this.productos[index].cantidad = cantidad
-      this.productos[index].precio = precio
-      if (cantidad <= 0) {
-        var elemento = document.getElementById(index)
-        elemento.remove()
-        this.productos.splice(index, 0)
+      this.productos[index].cantidad -= 1
+      if (this.productos[index].cantidad <= 0) {
+        this.productos.splice(index, 1)
       }
       let productos = this.productos
       db.collection('tucarrito').doc(this.user).set({productos})
@@ -117,12 +108,12 @@ export default {
       this.productos.forEach(producto => {
         resultado += producto.cantidad * producto.precio
       });
-      return resultado
+      return numeral(resultado).format('0,0') + 'Gs.'
     }
   },
   mounted() {
     this.getProducts()
-  },
+  }
 }
 </script>
 
@@ -132,14 +123,26 @@ header {
   display: flex !important;
 }
 
-table {
+.container {
+  width: 90%;
   height: 500px;
-  overflow: scroll;
+  margin-top: 30px;
+}
+
+.table {
+  height: 400px;
+  overflow-y: scroll;
 }
 
 .table * {
   font-size: .8rem;
   padding: 0;
+  width: 100%;
+  align-self: center;
+}
+
+.tbody * {
+  border-top: solid #d1d1d1 1px;
 }
 
 .btn {
@@ -165,4 +168,14 @@ table {
 .detalle {
   overflow: auto;
 }
+
+.btn-container button {
+  height: 27px;
+}
+
+
+tr {
+  width: inherit;
+}
+
 </style>

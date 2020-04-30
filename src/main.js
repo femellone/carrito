@@ -8,6 +8,7 @@ import store from './store'
 import router from './router'
 import firebase from 'firebase'
 import firebaseConfig from '../fbConfig'
+import numeral from 'numeral'
 
 
 // Vue.use(PortalVue)
@@ -19,6 +20,12 @@ firebase.initializeApp(firebaseConfig);
 export const db = firebase.firestore()
 
 Vue.config.productionTip = false
+
+Vue.filter(
+  'formatNumber', function (value) {
+    return numeral(value).format('0,000')
+  }
+)
 
 firebase.auth().onAuthStateChanged(function(){
   new Vue({
