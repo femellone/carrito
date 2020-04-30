@@ -1,0 +1,2 @@
+# redirect para evitar error 404 - from / to
+/login   /home
