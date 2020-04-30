@@ -47,14 +47,11 @@ export default {
     getProducts: function () {
       try {
         //comentario
-        this.productos = []
+        // this.productos = []
         db.collection('tucarrito').doc(this.user).get()
         .then(
           (result) => {
-            let productos = result.data().productos
-            productos.forEach(element => {
-              this.productos.push(element)
-            });
+            this.productos = result.data().productos
           },
           error => console.log(error)
         )
@@ -76,6 +73,7 @@ export default {
         this.nombre = null
         this.cantidad = null
         this.precio = null
+        this.getProducts()
       }
       else {
         if (this.nombre == null || this.nombre == '') {
@@ -88,7 +86,6 @@ export default {
           window.alert('Ingresá un precio porfa.')
         }
       }
-      this.getProducts()
     },
     increase: function (index) {
       var cantidad = parseInt(this.productos[index].cantidad)
@@ -96,6 +93,8 @@ export default {
       cantidad = cantidad + 1
       this.productos[index].cantidad = cantidad
       this.productos[index].precio = precio
+      let productos = this.productos
+      db.collection('tucarrito').doc(this.user).set({productos})
     },
     decrease: function (index) {
       var cantidad = this.productos[index].cantidad
@@ -108,9 +107,8 @@ export default {
         elemento.remove()
         this.productos.splice(index, 0)
       }
-    },
-    register: function () {
-      
+      let productos = this.productos
+      db.collection('tucarrito').doc(this.user).set({productos})
     }
   },
   computed: {
