@@ -141,7 +141,7 @@ header {
   align-self: center;
 }
 
-.tbody * {
+.tbody .tr {
   border-top: solid #d1d1d1 1px;
 }
 
