@@ -241,7 +241,6 @@
           session = localStorage.getItem( appID );
 
         if ( session && session.added ) {
-          console.log('acá pasó')
           return;
         }
         
@@ -250,15 +249,12 @@
           window.addEventListener( "beforeinstallprompt", beforeInstallPrompt );
           
           nativePrompt = true;
-          
-          console.log('acá pasó 2')
         }
         
         if ( "onappinstalled" in window ) {
           
           window.addEventListener( "appinstalled", function ( evt ) {
             
-            console.log('acá pasó 3')
             // TODO: update session object to reflect the PWA has been installed
             _instance.doLog( "a2hs", "installed" );
 
