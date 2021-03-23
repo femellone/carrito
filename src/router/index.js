@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import Index from "@/views/Index";
 import Login from "@/views/Login";
 import Lists from "@/views/Lists";
+import List from "@/views/List";
 import firebase from "firebase";
 
 Vue.use(VueRouter);
@@ -29,6 +30,14 @@ const routes = [
     path: "/lists",
     name: "Lists",
     component: Lists,
+    meta: {
+      auth: true,
+    },
+  },
+  {
+    path: "/list/:id",
+    name: "List",
+    component: List,
     meta: {
       auth: true,
     },

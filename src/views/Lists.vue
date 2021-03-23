@@ -1,6 +1,9 @@
 <template>
   <b-container class="lists">
-    <b-list-group>
+    <span class="lists__msg"
+      >Toca una lista para agregarle productos que quieras.</span
+    >
+    <b-list-group class="mt-3">
       <!-- "Add new" button -->
       <b-list-group-item
         class="list"
@@ -9,12 +12,9 @@
       >
         <b-icon icon="plus" />
       </b-list-group-item>
-      
+
       <!-- Item when empty lists array is empty -->
-      <b-list-group-item
-        v-if="!lists.length"
-        class="list__empty-message"
-      >
+      <b-list-group-item v-if="!lists.length" class="list__empty-message">
         <span>Agrega una lista con el botón de arriba 👆</span>
       </b-list-group-item>
 
@@ -24,25 +24,39 @@
         v-for="(list, index) in lists"
         :key="`list-${index}`"
       >
-        <div class="list__name">
+        <div class="list__name" @click="goTo('list', list.id)">
           <span> {{ list.name + list.id }} </span>
         </div>
         <div class="list__delete-button">
           <b-icon icon="trash-fill" variant="danger" @click="openModal(list)" />
         </div>
       </b-list-group-item>
-
     </b-list-group>
 
     <!-- Add/Delete modal -->
-    <b-modal id="modal-list" :title="listToBeDeleted ? `Eliminar lista` : `Agregar lista`" :ok-variant="listToBeDeleted ? 'danger' : 'success'" @ok="listToBeDeleted ? removeList() : addList($event)" @cancel="closeModal" @close="closeModal">
-
+    <b-modal
+      id="modal-list"
+      :title="listToBeDeleted ? `Eliminar lista` : `Agregar lista`"
+      :ok-variant="listToBeDeleted ? 'danger' : 'success'"
+      @ok="listToBeDeleted ? removeList() : addList($event)"
+      @cancel="closeModal"
+      @close="closeModal"
+    >
       <!-- Delete content -->
-      <span v-if="listToBeDeleted" class="delete-modal">Está seguro de que desea eliminar la lista {{listToBeDeleted.name}}?</span>
+      <span v-if="listToBeDeleted" class="delete-modal"
+        >Está seguro de que desea eliminar la lista
+        {{ listToBeDeleted.name }}?</span
+      >
 
-        <!-- Add content -->
+      <!-- Add content -->
       <div v-else>
-        <b-form-input id="input-name" v-model="listName" :state="validateListName" trim placeholder="Ingresa un nombre para tu lista" />
+        <b-form-input
+          id="input-name"
+          v-model="listName"
+          :state="validateListName"
+          trim
+          placeholder="Ingresa un nombre para tu lista"
+        />
         <b-form-invalid-feedback id="input-name-feedback">
           No puede estar vacío.
         </b-form-invalid-feedback>
@@ -50,7 +64,7 @@
 
       <!-- Footer -->
       <template #modal-ok>
-        <span>{{listToBeDeleted ? 'Eliminar' : 'Guardar'}}</span>
+        <span>{{ listToBeDeleted ? "Eliminar" : "Guardar" }}</span>
       </template>
       <template #modal-cancel>
         <span>Cancelar</span>
@@ -70,45 +84,58 @@ export default {
         { id: 0, name: "Lista" },
       ],
       listToBeDeleted: null,
-      listName: ''
+      listName: "",
     };
   },
   computed: {
-    validateListName(){
-      return this.listName.length > 0
-    }
+    validateListName() {
+      return this.listName.length > 0;
+    },
   },
   methods: {
-    openModal(list){
-      if (list) this.listToBeDeleted = list
-      this.$bvModal.show('modal-list')
+    openModal(list) {
+      if (list) this.listToBeDeleted = list;
+      this.$bvModal.show("modal-list");
     },
 
-    closeModal(){
-      this.$bvModal.hide('modal-list')
-      this.listToBeDeleted = null
-      this.listName = ''
+    closeModal() {
+      this.$bvModal.hide("modal-list");
+      this.listToBeDeleted = null;
+      this.listName = "";
     },
 
     removeList() {
       // Agregar el request de delete de la lista
-      this.lists = [...this.lists.filter(list => list.id !== this.listToBeDeleted.id)]
-      this.listToBeDeleted = null
+      this.lists = [
+        ...this.lists.filter((list) => list.id !== this.listToBeDeleted.id),
+      ];
+      this.listToBeDeleted = null;
     },
 
-    addList(event){
+    addList(event) {
       // Agregar primero el request y obtener la nueva lista con su ID desde el response
-      if (!this.listName) event.preventDefault()
+      if (!this.listName) event.preventDefault();
       else {
-        this.lists = [{id: 50, name: this.listName}, ...this.lists]
-        this.listName = ''
+        this.lists = [{ id: 50, name: this.listName }, ...this.lists];
+        this.listName = "";
       }
+    },
+
+    goTo(route, listId) {
+      this.$router.push({ path: `/list/${listId}` });
     },
   },
 };
 </script>
 
-<style>
+<style scoped>
+.lists__msg {
+  cursor: default;
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none; /* Standard */
+}
 .list:first-child {
   background-color: rgb(7, 165, 7);
   color: white;
@@ -119,6 +146,7 @@ export default {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
+  cursor: pointer;
 }
 
 .list__name {

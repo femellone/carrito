@@ -20,11 +20,11 @@ export const db = firebase.firestore();
 
 Vue.config.productionTip = false;
 
-Vue.filter("formatNumber", function(value) {
+Vue.filter("formatNumber", function (value) {
   return numeral(value).format("0,000");
 });
 
-firebase.auth().onAuthStateChanged(function() {
+firebase.auth().onAuthStateChanged(function () {
   new Vue({
     store,
     router,
